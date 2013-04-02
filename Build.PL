@@ -1,5 +1,3 @@
-#! perl -w
-
 use strict;
 use warnings;
 use Module::Build;
@@ -17,5 +15,5 @@ Module::Build->new(
     'MIME::Base64' => 0,
     'Test::More'   => 0,
   },
-  c_source             => [ 'src' ],
+  c_source             => 'src',
 )->create_build_script;

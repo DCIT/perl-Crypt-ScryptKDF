@@ -7,7 +7,7 @@ use MIME::Base64 qw(decode_base64 encode_base64);
 use parent "Exporter";
 our @EXPORT_OK = qw(scrypt_raw scrypt_hex scrypt_b64 scrypt_hash scrypt_hash_verify);
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 $VERSION = eval $VERSION;
 
 require XSLoader;
