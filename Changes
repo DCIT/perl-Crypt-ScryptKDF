@@ -1,6 +1,9 @@
 Changes for Crypt::ScryptKDF
 
-0.002   2013/02/04
+0.003   2013/04/05
+        - ready for CPAN
+
+0.002   2013/04/02
         - compatibility with older Module::Build
 
 0.001   2013/03/21

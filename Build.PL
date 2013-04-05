@@ -7,6 +7,7 @@ Module::Build->new(
   dist_abstract        => 'Scrypt password based key derivation function',
   dist_author          => 'Karel Miko',
   dist_version_from    => 'lib/Crypt/ScryptKDF.pm',
+  license              => 'perl',
   create_readme        => 1,
   requires             => {
     'MIME::Base64' => 0,

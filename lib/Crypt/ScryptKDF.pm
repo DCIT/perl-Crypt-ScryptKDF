@@ -1,24 +1,21 @@
 package Crypt::ScryptKDF;
 
+# Copyright (c) 2013 DCIT, a.s. [http://www.dcit.cz] - Miko
+
 use strict;
 use warnings ;
+
+our $VERSION = '0.003';
+$VERSION = eval $VERSION;
 
 use MIME::Base64 qw(decode_base64 encode_base64);
 use parent "Exporter";
 our @EXPORT_OK = qw(scrypt_raw scrypt_hex scrypt_b64 scrypt_hash scrypt_hash_verify);
 
-our $VERSION = '0.002';
-$VERSION = eval $VERSION;
-
 require XSLoader;
 XSLoader::load('Crypt::ScryptKDF', $VERSION);
 
-sub _get_scrypt_defaults {
-  # (N=2^14, r=8, p=1, len=32)
-  return (16384, 8, 1, 32);
-}
-
-sub _get_salt {
+sub _random_bytes {
   my $length = shift || 32;
   my $rv;
 
@@ -37,17 +34,21 @@ sub _get_salt {
   elsif (eval {require Crypt::Random}) {
     $rv = Crypt::Random::makerandom_octet(Length=>$length);
   }
-  elsif (eval {require String::Random}) {
-    my $sr = String::Random->new;
-    $rv = $sr->randpattern('b' x $length);
+  elsif (eval {require Bytes::Random::Secure}) {
+    $rv = Bytes::Random::Secure::random_bytes(32);
   }
 
   if (!defined $rv)  {
-    warn "WARNING: Generating salt via insecure rand()\n";
+    warn "WARNING: Generating random bytes via insecure rand()\n";
     $rv = pack('C*', map(int(rand(256)), 1..$length));
   }
 
   return $rv
+}
+
+sub _get_scrypt_defaults {
+  # (N=2^14, r=8, p=1, len=32)
+  return (16384, 8, 1, 32);
 }
 
 sub scrypt_raw {
@@ -93,13 +94,13 @@ sub _scrypt_extra {
   my $salt;
   my @args;
   if (@_ == 1) {        # ... ($passwd)
-    ($salt, @args) = (_get_salt, _get_scrypt_defaults);
+    ($salt, @args) = (_random_bytes(32), _get_scrypt_defaults);
   }
   elsif (@_ == 2) {     # ... ($passwd, $salt)
     ($salt, @args) = ($_[1], _get_scrypt_defaults);
   }
   elsif (@_ == 5) {     # ... ($passwd, $N, $r, $p, $dklen)
-    ($salt, @args) = (_get_salt, $_[1], $_[2], $_[3], $_[4]);
+    ($salt, @args) = (_random_bytes(32), $_[1], $_[2], $_[3], $_[4]);
   }
   elsif (@_ == 6) {     # ... ($passwd, $salt, $N, $r, $p, $dklen)
     (undef, $salt, @args) = @_;
