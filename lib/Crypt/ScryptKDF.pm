@@ -10,12 +10,12 @@ $VERSION = eval $VERSION;
 
 use MIME::Base64 qw(decode_base64 encode_base64);
 use parent "Exporter";
-our @EXPORT_OK = qw(scrypt_raw scrypt_hex scrypt_b64 scrypt_hash scrypt_hash_verify);
+our @EXPORT_OK = qw(scrypt_raw scrypt_hex scrypt_b64 scrypt_hash scrypt_hash_verify random_bytes);
 
 require XSLoader;
 XSLoader::load('Crypt::ScryptKDF', $VERSION);
 
-sub _random_bytes {
+sub random_bytes {
   my $length = shift || 32;
   my $rv;
 
@@ -44,11 +44,6 @@ sub _random_bytes {
   }
 
   return $rv
-}
-
-sub _get_scrypt_defaults {
-  # (N=2^14, r=8, p=1, len=32)
-  return (16384, 8, 1, 32);
 }
 
 sub scrypt_raw {
@@ -90,17 +85,22 @@ sub scrypt_hash_verify {
   return 1;
 }
 
+sub _get_scrypt_defaults {
+  # (N=2^14, r=8, p=1, len=32)
+  return (16384, 8, 1, 32);
+}
+
 sub _scrypt_extra {
   my $salt;
   my @args;
   if (@_ == 1) {        # ... ($passwd)
-    ($salt, @args) = (_random_bytes(32), _get_scrypt_defaults);
+    ($salt, @args) = (random_bytes(32), _get_scrypt_defaults);
   }
   elsif (@_ == 2) {     # ... ($passwd, $salt)
     ($salt, @args) = ($_[1], _get_scrypt_defaults);
   }
   elsif (@_ == 5) {     # ... ($passwd, $N, $r, $p, $dklen)
-    ($salt, @args) = (_random_bytes(32), $_[1], $_[2], $_[3], $_[4]);
+    ($salt, @args) = (random_bytes(32), $_[1], $_[2], $_[3], $_[4]);
   }
   elsif (@_ == 6) {     # ... ($passwd, $salt, $N, $r, $p, $dklen)
     (undef, $salt, @args) = @_;
@@ -149,13 +149,14 @@ Crypt::ScryptKDF - Scrypt password based key derivation function
  $key_base64 = scrypt_b64($password, $N, $r, $p, $len);
 
  ###### creating / verifying scrypt-based password hash
- use Crypt::ScryptKDF qw(scrypt_hash scrypt_hash_verify);
+ use Crypt::ScryptKDF qw(scrypt_hash scrypt_hash_verify random_bytes);
 
  my $hash = scrypt_hash("secret password");
  # .. later
  die "Invalid password" unless scrypt_hash_verify("secret password", $hash);
 
  #or by specifying Scrypt parameters
+ my $salt = random_bytes(32);
  my $hash = scrypt_hash($password, $salt, $N, $r, $p, $len);
  my $hash = scrypt_hash($password, $N, $r, $p, $len);
  my $hash = scrypt_hash($password, $salt);
@@ -176,6 +177,21 @@ It can be used for:
 =back
 
 More details about Scrypt: L<http://www.tarsnap.com/scrypt/scrypt.pdf> and L<https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-00>
+
+B<IMPORTANT:> This module needs a cryptographically strong random
+number generator. It tries to use one of the following:
+
+=over
+
+=item * L<Crypt::OpenSSL::Random> - random_bytes()
+
+=item * L<Net::SSLeay> - RAND_bytes()
+
+=item * L<Crypt::Random> - makerandom_octet()
+
+=item * L<Bytes::Random::Secure> - random_bytes()
+
+=item * As an B<unsecure> fallback it uses built-in rand()
 
 =head1 FUNCTIONS
 
@@ -215,7 +231,14 @@ Similar to scrypt_raw only the return value is BASE64 encoded.
  #  $password - password to be verified
  #  $hash - hash previously created via scrypt_hash
  #returns:
- #  1 (ok) or 1 (fail)
+ #  1 (ok) or 0 (fail)
+
+=item * random_bytes
+
+ my $salt = random_bytes($len);
+ #  $len - number of ramdom bytes
+ #returns:
+ #  $len random octets
 
 =back
 
