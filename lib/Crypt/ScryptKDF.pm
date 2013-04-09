@@ -64,14 +64,16 @@ sub scrypt_hex {
 }
 
 sub scrypt_hash {
-  my ($key, $salt, @args) = _scrypt_extra(@_);
-  return join(':', 'SCRYPT', @args, MIME::Base64::encode($salt, ""), MIME::Base64::encode($key, ""));
+  my ($key, $salt, $N, $r, $p) = _scrypt_extra(@_);
+  return undef unless defined $key && defined $salt && defined $N && defined $r && defined $p;
+  return "SCRYPT:$N:$r:$p:" . MIME::Base64::encode($salt, "") . ":" . MIME::Base64::encode($key, "");
 }
 
 sub scrypt_hash_verify {
   my ($passwd, $string) = @_;
   return 0 unless $string;
-  my ($alg, $N, $r, $p, $salt, $hash) = ($string =~ /^(SCRYPT):(\d+):(\d+):(\d+):([^\$]+):([^\$]+)$/);
+  return 0 unless defined $passwd;
+  my ($alg, $N, $r, $p, $salt, $hash) = ($string =~ /^(SCRYPT):(\d+):(\d+):(\d+):([^\:]+):([^\:]+)$/);
   return 0 unless defined $salt && defined $hash;
   $salt = MIME::Base64::decode($salt);
   $hash = MIME::Base64::decode($hash);
