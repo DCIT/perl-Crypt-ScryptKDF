@@ -1,6 +1,6 @@
 Changes for Crypt::ScryptKDF
 
-0.004   2013/xx/xx
+0.004   2013/04/09
         - documentation fixes
         - exported function random_bytes
 

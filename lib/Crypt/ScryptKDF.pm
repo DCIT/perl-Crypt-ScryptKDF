@@ -5,7 +5,7 @@ package Crypt::ScryptKDF;
 use strict;
 use warnings ;
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 $VERSION = eval $VERSION;
 
 use MIME::Base64 qw(decode_base64 encode_base64);
@@ -193,6 +193,8 @@ number generator. It tries to use one of the following:
 
 =item * As an B<unsecure> fallback it uses built-in rand()
 
+=back
+
 =head1 FUNCTIONS
 
 =over
@@ -205,7 +207,7 @@ number generator. It tries to use one of the following:
  #  $N - CPU/memory cost (has to be power of 2 and >1); DEFAULT: 2^14
  #  $r - block size parameter; DEFAULT: 8
  #  $p - parallelization parameter; DEFAULT: 1
- #  $len - length of derived key; DEFAULT: 256bits
+ #  $len - length of derived key (in bytes); DEFAULT: 32
  #returns:
  #  derived key (raw bytes) of length $len
 

@@ -22,13 +22,14 @@ SYNOPSIS
      $key_base64 = scrypt_b64($password, $N, $r, $p, $len);
 
      ###### creating / verifying scrypt-based password hash
-     use Crypt::ScryptKDF qw(scrypt_hash scrypt_hash_verify);
+     use Crypt::ScryptKDF qw(scrypt_hash scrypt_hash_verify random_bytes);
 
      my $hash = scrypt_hash("secret password");
      # .. later
      die "Invalid password" unless scrypt_hash_verify("secret password", $hash);
 
      #or by specifying Scrypt parameters
+     my $salt = random_bytes(32);
      my $hash = scrypt_hash($password, $salt, $N, $r, $p, $len);
      my $hash = scrypt_hash($password, $N, $r, $p, $len);
      my $hash = scrypt_hash($password, $salt);
@@ -47,6 +48,19 @@ DESCRIPTION
     More details about Scrypt: <http://www.tarsnap.com/scrypt/scrypt.pdf>
     and <https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-00>
 
+    IMPORTANT: This module needs a cryptographically strong random number
+    generator. It tries to use one of the following:
+
+    *   Crypt::OpenSSL::Random - random_bytes()
+
+    *   Net::SSLeay - RAND_bytes()
+
+    *   Crypt::Random - makerandom_octet()
+
+    *   Bytes::Random::Secure - random_bytes()
+
+    *   As an unsecure fallback it uses built-in rand()
+
 FUNCTIONS
     *   scrypt_raw
 
@@ -56,7 +70,7 @@ FUNCTIONS
          #  $N - CPU/memory cost (has to be power of 2 and >1); DEFAULT: 2^14
          #  $r - block size parameter; DEFAULT: 8
          #  $p - parallelization parameter; DEFAULT: 1
-         #  $len - length of derived key; DEFAULT: 256bits
+         #  $len - length of derived key (in bytes); DEFAULT: 32
          #returns:
          #  derived key (raw bytes) of length $len
 
@@ -83,7 +97,14 @@ FUNCTIONS
          #  $password - password to be verified
          #  $hash - hash previously created via scrypt_hash
          #returns:
-         #  1 (ok) or 1 (fail)
+         #  1 (ok) or 0 (fail)
+
+    *   random_bytes
+
+         my $salt = random_bytes($len);
+         #  $len - number of ramdom bytes
+         #returns:
+         #  $len random octets
 
 COPYRIGHT
     Copyright (c) 2013 DCIT, a.s. <http://www.dcit.cz> / Karel Miko
