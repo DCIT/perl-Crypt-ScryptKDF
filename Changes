@@ -1,5 +1,8 @@
 Changes for Crypt::ScryptKDF
 
+0.005   2013/04/17
+        - fixing cpan testers failure on pre 5.10.1
+
 0.004   2013/04/09
         - documentation fixes
         - exported function random_bytes

@@ -8,13 +8,18 @@ Module::Build->new(
   dist_author          => 'Karel Miko',
   dist_version_from    => 'lib/Crypt/ScryptKDF.pm',
   license              => 'perl',
-  create_readme        => 1,
+  c_source             => 'src',
   requires             => {
-    'MIME::Base64' => 0,
+    'MIME::Base64'  => 0,
+    'parent'        => 0,
   },
   build_requires       => {
-    'MIME::Base64' => 0,
-    'Test::More'   => 0,
+    'MIME::Base64'  => 0,
+    'parent'        => 0,
+    'Module::Build' => 0,
+    'Test::More'    => 0,
   },
-  c_source             => 'src',
+  configure_requires   => {
+    'Module::Build' => 0,
+  },
 )->create_build_script;
