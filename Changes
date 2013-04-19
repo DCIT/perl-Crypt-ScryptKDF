@@ -1,5 +1,8 @@
 Changes for Crypt::ScryptKDF
 
+0.006   2013/04/19
+        - fixing cpan testers failure on netbsd
+
 0.005   2013/04/17
         - fixing cpan testers failure on pre 5.10.1
 
