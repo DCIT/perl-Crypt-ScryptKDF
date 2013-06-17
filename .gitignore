@@ -18,3 +18,4 @@ META.yml
 MANIFEST
 lib/Crypt/ScryptKDF.c
 Crypt-*
+poznamky.txt

@@ -5,12 +5,14 @@ package Crypt::ScryptKDF;
 use strict;
 use warnings ;
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 $VERSION = eval $VERSION;
 
 use MIME::Base64 qw(decode_base64 encode_base64);
-use parent "Exporter";
-our @EXPORT_OK = qw(scrypt_raw scrypt_hex scrypt_b64 scrypt_hash scrypt_hash_verify random_bytes);
+use Exporter 'import';
+our %EXPORT_TAGS = ( all => [qw(scrypt_raw scrypt_hex scrypt_b64 scrypt_hash scrypt_hash_verify random_bytes)] );
+our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+our @EXPORT = qw();
 
 require XSLoader;
 XSLoader::load('Crypt::ScryptKDF', $VERSION);
@@ -245,6 +247,10 @@ Similar to scrypt_raw only the return value is BASE64 encoded.
  #  $len random octets
 
 =back
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 =head1 COPYRIGHT
 

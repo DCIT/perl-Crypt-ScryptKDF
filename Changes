@@ -1,5 +1,9 @@
 Changes for Crypt::ScryptKDF
 
+0.007   2013/06/17
+        - somehow works with perl 5.6.2
+        - improving CPANTS score
+
 0.006   2013/04/19
         - fixing cpan testers failure on netbsd
 
