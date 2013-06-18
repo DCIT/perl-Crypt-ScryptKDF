@@ -32,7 +32,13 @@
 /*XXX #include <sys/mman.h>*/
 
 #include <errno.h>
+
+#ifdef _MSC_VER
+#include "msinttypes.h"
+#else
 #include <stdint.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 

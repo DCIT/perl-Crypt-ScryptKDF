@@ -51,6 +51,8 @@ DESCRIPTION
     IMPORTANT: This module needs a cryptographically strong random number
     generator. It tries to use one of the following:
 
+    *   Crypt::PRNG - random_bytes()
+
     *   Crypt::OpenSSL::Random - random_bytes()
 
     *   Net::SSLeay - RAND_bytes()

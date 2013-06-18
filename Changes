@@ -1,5 +1,9 @@
 Changes for Crypt::ScryptKDF
 
+0.008   2013/06/18
+        - tries Crypt::PRNG::random_bytes()
+        - MSVC related fixes
+
 0.007   2013/06/17
         - somehow works with perl 5.6.2
         - improving CPANTS score

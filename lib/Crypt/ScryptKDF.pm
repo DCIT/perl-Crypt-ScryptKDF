@@ -5,7 +5,7 @@ package Crypt::ScryptKDF;
 use strict;
 use warnings ;
 
-our $VERSION = '0.007';
+our $VERSION = '0.008';
 $VERSION = eval $VERSION;
 
 use MIME::Base64 qw(decode_base64 encode_base64);
@@ -21,7 +21,10 @@ sub random_bytes {
   my $length = shift || 32;
   my $rv;
 
-  if (eval {require Crypt::OpenSSL::Random}) {
+  if (eval {require Crypt::PRNG}) {
+    $rv = Crypt::PRNG::random_bytes($length);
+  }
+  elsif (eval {require Crypt::OpenSSL::Random}) {
     if (Crypt::OpenSSL::Random::random_status()) {
       $rv = Crypt::OpenSSL::Random::random_bytes($length);
     }
@@ -186,6 +189,8 @@ B<IMPORTANT:> This module needs a cryptographically strong random
 number generator. It tries to use one of the following:
 
 =over
+
+=item * L<Crypt::PRNG> - random_bytes()
 
 =item * L<Crypt::OpenSSL::Random> - random_bytes()
 
