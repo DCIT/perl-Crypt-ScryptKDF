@@ -1,4 +1,6 @@
 Changes for Crypt::ScryptKDF
+TODO:
+        - solaris: cannot find include file: <stdint.h> - http://ppm4.activestate.com/sun4-solaris/5.14/1400/M/MI/MIK/Crypt-ScryptKDF-0.008.d/log-20130618T103930.txt
 
 0.008   2013/06/18
         - tries Crypt::PRNG::random_bytes()

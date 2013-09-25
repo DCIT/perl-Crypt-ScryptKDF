@@ -31,9 +31,12 @@
 
 #ifdef _MSC_VER
 #include "msinttypes.h"
+#elsif defined(__sun) || defined(__sun__)
+#include <sys/inttypes.h>
 #else
 #include <stdint.h>
 #endif
+
 
 /**
  * crypto_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):
