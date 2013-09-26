@@ -30,4 +30,9 @@ Module::Build->new(
   configure_requires   => {
     'Module::Build' => 0,
   },
+  meta_merge => {
+    resources  => {
+      repository => 'https://github.com/DCIT/perl-Crypt-ScryptKDF',
+    }
+  },
 )->create_build_script;
