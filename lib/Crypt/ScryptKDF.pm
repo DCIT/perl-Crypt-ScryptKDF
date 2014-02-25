@@ -85,6 +85,7 @@ sub scrypt_hash_verify {
   return 0 unless defined $salt && defined $hash;
   return 0 unless length($hash) > 0;
   return 0 unless $N > 0 && $r >= 0 && $p >= 0;
+  #XXX-TODO utf8::encode($passwd) if utf8::is_utf8($passwd);
   my $key = _scrypt($passwd, $salt, $N, $r, $p, length($hash));
   return 0 unless defined $key;
   return 0 unless _slow_eq($key, $hash);
@@ -121,6 +122,7 @@ sub _scrypt_extra {
   if ($args[1] < 1)  { warn "ERROR: invalid 'r'\n"; return }
   if ($args[2] < 1)  { warn "ERROR: invalid 'p'\n"; return }
   if ($args[3] < 1)  { warn "ERROR: invalid 'len'\n"; return }
+  #XXX-TODO utf8::encode($_[0]) if utf8::is_utf8($_[0]);
   my $key = _scrypt($_[0], $salt, @args);
   return wantarray ? ($key, $salt, $args[0], $args[1], $args[2]) : $key;
 }
