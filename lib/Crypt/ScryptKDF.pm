@@ -87,8 +87,7 @@ sub scrypt_hash_verify {
   return 0 unless $N > 0 && $r >= 0 && $p >= 0;
   my $key = _scrypt($passwd, $salt, $N, $r, $p, length($hash));
   return 0 unless defined $key;
-  return 0 unless length($key) == length($hash);
-  return 0 unless unpack("H*", $key) eq unpack("H*", $hash);
+  return 0 unless _slow_eq($key, $hash);
   return 1;
 }
 
@@ -124,6 +123,16 @@ sub _scrypt_extra {
   if ($args[3] < 1)  { warn "ERROR: invalid 'len'\n"; return }
   my $key = _scrypt($_[0], $salt, @args);
   return wantarray ? ($key, $salt, $args[0], $args[1], $args[2]) : $key;
+}
+
+sub _slow_eq {
+  my ($a, $b) = @_;
+  return unless defined $a && defined $b;
+  my $diff = length $a ^ length $b;
+  for(my $i = 0; $i < length $a && $i < length $b; $i++) {
+    $diff |= ord(substr $a, $i) ^ ord(substr $b, $i);
+  }
+  return $diff == 0;
 }
 
 1;
