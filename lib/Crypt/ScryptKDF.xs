@@ -7,7 +7,7 @@
 MODULE = Crypt::ScryptKDF       PACKAGE = Crypt::ScryptKDF
 
 SV *
-_scrypt(SV *passwd, SV *salt, UV N, U32 r, U32 p, UV res_len)
+_scrypt(SV *passwd, SV *salt, UV N, U32 r, U32 p, STRLEN res_len)
     PREINIT:
         STRLEN p_len, s_len;
         uint8_t *result, *p_data, *s_data;

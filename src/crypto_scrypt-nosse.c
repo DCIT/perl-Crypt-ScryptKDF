@@ -35,7 +35,7 @@
 
 #ifdef _MSC_VER
 #include "msinttypes.h"
-#elsif defined(__sun) || defined(__sun__)
+#elif defined(__sun) || defined(__sun__)
 #include <sys/inttypes.h>
 #else
 #include <stdint.h>
@@ -44,7 +44,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "sha256.h"
+#include "sha256.c.inc"
 #include "sysendian.h"
 
 #include "crypto_scrypt.h"

@@ -35,4 +35,9 @@ like( Crypt::ScryptKDF::scrypt_hash("passwd"), qr/^SCRYPT:\d+:\d+:\d+:.{10,}:.{1
 my $str = Crypt::ScryptKDF::scrypt_hash("passwd");
 is( Crypt::ScryptKDF::scrypt_hash_verify("passwd", $str), 1);
 
+like( Crypt::ScryptKDF::scrypt_hash("passwd",\4),  qr/^SCRYPT:\d+:\d+:\d+:.{8}:.{10,}/);
+like( Crypt::ScryptKDF::scrypt_hash("passwd",\8),  qr/^SCRYPT:\d+:\d+:\d+:.{12}:.{10,}/);
+like( Crypt::ScryptKDF::scrypt_hash("passwd",\16), qr/^SCRYPT:\d+:\d+:\d+:.{24}:.{10,}/);
+like( Crypt::ScryptKDF::scrypt_hash("passwd",\32), qr/^SCRYPT:\d+:\d+:\d+:.{44}:.{10,}/);
+
 done_testing;

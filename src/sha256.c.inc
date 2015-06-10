@@ -29,7 +29,7 @@
 
 #ifdef _MSC_VER
 #include "msinttypes.h"
-#elsif defined(__sun) || defined(__sun__)
+#elif defined(__sun) || defined(__sun__)
 #include <sys/inttypes.h>
 #else
 #include <stdint.h>
@@ -218,7 +218,7 @@ SHA256_Pad(SHA256_CTX * ctx)
 }
 
 /* SHA-256 initialization.  Begins a SHA-256 operation. */
-void
+static void
 SHA256_Init(SHA256_CTX * ctx)
 {
 
@@ -237,7 +237,7 @@ SHA256_Init(SHA256_CTX * ctx)
 }
 
 /* Add bytes into the hash */
-void
+static void
 SHA256_Update(SHA256_CTX * ctx, const void *in, size_t len)
 {
 	uint32_t bitlen[2];
@@ -283,7 +283,7 @@ SHA256_Update(SHA256_CTX * ctx, const void *in, size_t len)
  * SHA-256 finalization.  Pads the input data, exports the hash value,
  * and clears the context state.
  */
-void
+static void
 SHA256_Final(unsigned char digest[32], SHA256_CTX * ctx)
 {
 
@@ -298,7 +298,7 @@ SHA256_Final(unsigned char digest[32], SHA256_CTX * ctx)
 }
 
 /* Initialize an HMAC-SHA256 operation with the given key. */
-void
+static void
 HMAC_SHA256_Init(HMAC_SHA256_CTX * ctx, const void * _K, size_t Klen)
 {
 	unsigned char pad[64];
@@ -334,7 +334,7 @@ HMAC_SHA256_Init(HMAC_SHA256_CTX * ctx, const void * _K, size_t Klen)
 }
 
 /* Add bytes to the HMAC-SHA256 operation. */
-void
+static void
 HMAC_SHA256_Update(HMAC_SHA256_CTX * ctx, const void *in, size_t len)
 {
 
@@ -343,7 +343,7 @@ HMAC_SHA256_Update(HMAC_SHA256_CTX * ctx, const void *in, size_t len)
 }
 
 /* Finish an HMAC-SHA256 operation. */
-void
+static void
 HMAC_SHA256_Final(unsigned char digest[32], HMAC_SHA256_CTX * ctx)
 {
 	unsigned char ihash[32];
@@ -366,7 +366,7 @@ HMAC_SHA256_Final(unsigned char digest[32], HMAC_SHA256_CTX * ctx)
  * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
  * write the output to buf.  The value dkLen must be at most 32 * (2^32 - 1).
  */
-void
+static void
 PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
     size_t saltlen, uint64_t c, uint8_t * buf, size_t dkLen)
 {
