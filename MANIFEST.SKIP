@@ -30,3 +30,4 @@ poznamky*
 ^tmp
 lib/Crypt/ScryptKDF.c
 ^Crypt-*
+.travis.yml
