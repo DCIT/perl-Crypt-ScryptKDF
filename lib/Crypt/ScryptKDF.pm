@@ -3,7 +3,7 @@ package Crypt::ScryptKDF;
 use strict;
 use warnings ;
 
-our $VERSION = '0.009';
+our $VERSION = '0.010';
 
 use MIME::Base64 qw(decode_base64 encode_base64);
 use Exporter 'import';

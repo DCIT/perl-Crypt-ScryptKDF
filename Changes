@@ -2,6 +2,9 @@ Changes for Crypt::ScryptKDF
 TODO:
         - solaris: cannot find include file: <stdint.h> - http://ppm4.activestate.com/sun4-solaris/5.14/1400/M/MI/MIK/Crypt-ScryptKDF-0.008.d/log-20130618T103930.txt
         
+0.010   2015/11/28
+        - consistently use UNIX newlines
+
 0.009   2015/06/21
         - fix for https://rt.cpan.org/Public/Bug/Display.html?id=100721
         - scrypt_hash() - $salt can be be specified as a reference to scalar 
